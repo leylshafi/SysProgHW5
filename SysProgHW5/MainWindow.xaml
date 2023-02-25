@@ -3,9 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:SysProgHW5"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="4*"/>
@@ -36,8 +37,8 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <StackPanel>
-                <TextBlock FontSize="17" Margin="10">Places In Semaphore</TextBlock>
-
+                <TextBlock FontSize="17" Margin="150 10 0 10">Places In Semaphore</TextBlock>
+                <xctk:IntegerUpDown x:Name="numeric" AllowTextInput="False" Width="100" ValueChanged="numeric_ValueChanged"/>
             </StackPanel>
             <Button x:Name="btnCreate" Grid.Column="1" Margin="100 25" FontSize="20" Click="btnCreate_Click">Create</Button>
         </Grid>

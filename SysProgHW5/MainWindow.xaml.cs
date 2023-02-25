@@ -22,19 +22,21 @@ public partial class MainWindow : Window
     public ObservableCollection<Thread> Created { get; set; }
     public ObservableCollection<Thread> Waiting { get; set; }
     public ObservableCollection<Thread> Working { get; set; }
+    public int InitialCount { get; set; }
     private readonly Semaphore semaphore;
     int count= 0;
     public MainWindow()
     {
         InitializeComponent();
         DataContext = this;
-
+        numeric.Value = 3;
+        InitialCount =(int)numeric.Value;
 
         Created = new();
         Waiting = new();
         Working = new();
 
-        semaphore = new(3, 3, "SEMAPHORE");
+        semaphore = new(InitialCount, 3, "SEMAPHORE");
     }
 
     private void btnCreate_Click(object sender, RoutedEventArgs e)
@@ -48,7 +50,7 @@ public partial class MainWindow : Window
     {
         if (semaphore is Semaphore s)
         {
-            Thread.Sleep(2000);
+            Thread.Sleep(4000);
 
             if (s.WaitOne())
             {
@@ -57,8 +59,12 @@ public partial class MainWindow : Window
                     var t = Thread.CurrentThread;
                     Dispatcher.Invoke(() => Waiting.Remove(t));
                     Dispatcher.Invoke(() => Working.Add(t));
-                    Thread.Sleep(5000);
+                    Thread.Sleep(8000);
                     Dispatcher.Invoke(() => Working.Remove(t));
+                }
+                catch(Exception ex) 
+                {
+                    MessageBox.Show(ex.Message);
                 }
                 finally
                 {
@@ -78,5 +84,21 @@ public partial class MainWindow : Window
             Waiting.Add(t);
             t.Start(semaphore);
         }
+    }
+
+    private void numeric_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+    {
+        if(numeric.Value < 0)
+        {
+            numeric.Value = 0;
+        }
+
+        InitialCount=(int)numeric.Value;
+
+    }
+
+    private void Window_Loaded(object sender, RoutedEventArgs e)
+    {
+        numeric.Value = 3;
     }
 }
